@@ -13,7 +13,7 @@ commonmark==0.9.1
 contourpy==1.0.6
 cryptography==38.0.4
 cycler==0.11.0
-databricks-connect==10.4.12
+databricks-connect==10.4.38
 databricks-sql-connector==2.2.1
 decorator==5.1.1
 entrypoints==0.4
