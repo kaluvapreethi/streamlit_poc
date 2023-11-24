@@ -21,6 +21,6 @@ if __name__=="__main__":
         df.columns=[x[0] for x in res.description]
         print(df)
         st.dataframe(df)
-        st.write("Displaying only top 1000 rows")
+        st.write("Displaying only top 10 rows")
 
 
