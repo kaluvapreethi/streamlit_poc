@@ -8,6 +8,6 @@ COPY . .
 
 RUN pip3 install -r requirements.txt
 
-EXPOSE 8000
+EXPOSE 8002
 
 ENTRYPOINT ["streamlit", "run", "app.py", "--server.port=8002", "--server.address=0.0.0.0"]
