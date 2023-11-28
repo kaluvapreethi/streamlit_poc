@@ -25,7 +25,10 @@ jobs:
         login-server: ${{ secrets.LOGIN_SERVER }}
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
-    - run: |
-            docker build . -t ${{ secrets.LOGIN_SERVER }}/sampleapp:${{ github.sha }}
-            docker push ${{ secrets.LOGIN_SERVER }}/sampleapp:${{ github.sha }}
     
+    - name: Build the image and push it to ACR
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: pocbdstreamlit.azurecr.io/aspcoresample:${{ github.sha }}
+        file: Dockerfile
