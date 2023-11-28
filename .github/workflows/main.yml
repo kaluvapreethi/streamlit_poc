@@ -1,6 +1,9 @@
 name: docker_build_push_acr
  
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
  
 jobs:
