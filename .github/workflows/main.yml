@@ -33,5 +33,5 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags: pocbdstreamlit.azurecr.io/streamlitdocker:${{ github.sha }}
+        tags: pocbdstreamlit.azurecr.io/streamlitdocker:latest
         file: Dockerfile
