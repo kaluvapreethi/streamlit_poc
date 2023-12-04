@@ -48,6 +48,9 @@ if __name__=="__main__":
       st.title("Fetching data from DB tables")
       st.write("POC")
 
+      gender = st.selectbox('Select the gender?',('Male', 'Female'), index=None)
+      st.write('You selected:', gender)
+  
   fetch_data_from_db(config_file)
 
 
