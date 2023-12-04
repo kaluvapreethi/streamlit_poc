@@ -48,29 +48,4 @@ if __name__=="__main__":
       st.title("Fetching data from DB tables")
       st.write("POC")
 
-      if "visibility" not in st.session_state:
-        st.session_state.visibility = "visible"
-        st.session_state.disabled = False
-        st.session_state.placeholder = "This is a Place Holder"
-
-      f_name = st.text_input(
-      "First Name",
-      label_visibility=st.session_state.visibility,
-      disabled=st.session_state.disabled,
-      placeholder=st.session_state.placeholder,
-      )
-        
-      l_name = st.text_input(
-        "Last Name",
-        label_visibility=st.session_state.visibility,
-        disabled=st.session_state.disabled,
-        placeholder=st.session_state.placeholder,
-      )
-
-      if l_name and f_name:
-          st.write("Welcome: ", f_name, " ", l_name)
-          
-      gender = st.selectbox('Select the gender?',('Male', 'Female'), index=None)
-      st.write('You selected:', gender)
-
   fetch_data_from_db(config_file)
