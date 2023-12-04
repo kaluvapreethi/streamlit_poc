@@ -6,7 +6,7 @@ from azure.identity import ClientSecretCredential
 from azure.keyvault.secrets import SecretClient
 
 
-def authenticate_azure(config):
+def authenticate_azure(config_file):
   TENANT = config_file["AzureServicePrinciple"]["TENANT"]
   CLIENT_ID = config_file["AzureServicePrinciple"]["CLIENT_ID"]
   CLIENT_SECRET = config_file["AzureServicePrinciple"]["CLIENT_SECRET"]
@@ -17,9 +17,9 @@ def authenticate_azure(config):
   return client
 
 
-def fetch_data_from_db(config):
+def fetch_data_from_db(config_file,gender):
   
-  client = authenticate_azure(config)
+  client = authenticate_azure(config_file)
   http_path = client.get_secret("http-path").value
   server_hostname = client.get_secret("server-hostname").value
   access_token = client.get_secret("access-token").value
@@ -29,14 +29,11 @@ def fetch_data_from_db(config):
                     access_token    = access_token) as connection:
 
     with connection.cursor() as cursor:
-      res = cursor.execute("SELECT * FROM member_data LIMIT 10")
+      res = cursor.execute("SELECT * FROM member_data where gender == '{}'".format(gender))
 
       df = pd.DataFrame(res.fetchall())
       df.columns=[x[0] for x in res.description]
-      # print(df)
       st.dataframe(df)
-      st.write("Displaying only top 10 rows")
-
 
 if __name__=="__main__": 
   st.set_page_config(page_title="DB data", layout="wide")
@@ -47,8 +44,38 @@ if __name__=="__main__":
       st.subheader("DB POC")
       st.title("Fetching data from DB tables")
       st.write("POC")
+      if "visibility" not in st.session_state:
+        st.session_state.visibility = "visible"
+        st.session_state.disabled = False
+        st.session_state.placeholder = "This is a Place Holder"
 
-  fetch_data_from_db(config_file)
+      print("=======================================")
+      print(st.session_state)
+      print("=======================================")
+      f_name = st.text_input(
+        "First Name",
+        label_visibility=st.session_state.visibility,
+        disabled=st.session_state.disabled,
+        placeholder=st.session_state.placeholder,
+      )
+
+      l_name = st.text_input(
+        "Last Name",
+        label_visibility=st.session_state.visibility,
+        disabled=st.session_state.disabled,
+        placeholder=st.session_state.placeholder,
+      )
+
+      if l_name and f_name:
+          st.write("Welcome: ", f_name, " ", l_name)
+
+      gender = st.selectbox('Select the gender?',('Male', 'Female'), index=None)
+      st.write('You selected:', gender)
+
+      if gender:
+        fetch_data_from_db(config_file,gender)
+
+  
 
 
 
