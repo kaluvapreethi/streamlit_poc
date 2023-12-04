@@ -17,9 +17,9 @@ def authenticate_azure(config):
   return client
 
 
-def fetch_data_from_db(config):
+def fetch_data_from_db(config_file,gender):
   
-  client = authenticate_azure(config)
+  client = authenticate_azure(config_file)
   http_path = client.get_secret("http-path").value
   server_hostname = client.get_secret("server-hostname").value
   access_token = client.get_secret("access-token").value
@@ -29,13 +29,13 @@ def fetch_data_from_db(config):
                     access_token    = access_token) as connection:
 
     with connection.cursor() as cursor:
-      res = cursor.execute("SELECT * FROM member_data LIMIT 10")
+      res = cursor.execute("SELECT * FROM member_data where gender=='{}'".format(gender))
 
       df = pd.DataFrame(res.fetchall())
       df.columns=[x[0] for x in res.description]
       # print(df)
       st.dataframe(df)
-      st.write("Displaying only top 10 rows")
+      st.write("Displaying {} members".format(gender))
 
 
 if __name__=="__main__": 
@@ -72,8 +72,11 @@ if __name__=="__main__":
 
       gender = st.selectbox('Select the gender?',('Male', 'Female'), index=None)
       st.write('You selected:', gender)
+
+      if gender:
+        fetch_data_from_db(config_file,gender)
   
-  fetch_data_from_db(config_file)
+  # fetch_data_from_db(config_file)
 
 
 
