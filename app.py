@@ -1,20 +1,5 @@
-import pandas as pd
-from databricks import sql
 import streamlit as st
 import configparser
-from utility_functions import databricks_connection
-
-def fetch_data_from_db(config_file,gender):
-  connection = databricks_connection(config_file)
-  with connection.cursor() as cursor:
-    res = cursor.execute("SELECT * FROM member_data where gender=='{}'".format(gender))
-
-    df = pd.DataFrame(res.fetchall())
-    df.columns=[x[0] for x in res.description]
-    # print(df)
-    st.dataframe(df)
-    st.write("Displaying {} members".format(gender))
-
 
 if __name__=="__main__": 
   st.set_page_config(page_title="DB data", layout="wide")
@@ -47,11 +32,5 @@ if __name__=="__main__":
 
       if l_name and f_name:
           st.write("Welcome: ", f_name, " ", l_name)
-
-      gender = st.selectbox('Select the gender?',('Male', 'Female'), index=None)
-      st.write('You selected:', gender)
-
-      if gender:
-        fetch_data_from_db(config_file,gender)
 
 
