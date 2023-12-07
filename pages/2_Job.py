@@ -2,22 +2,9 @@ import pandas as pd
 from databricks import sql
 import streamlit as st
 import configparser
-from azure.identity import ClientSecretCredential
-from azure.keyvault.secrets import SecretClient
-
-def authenticate_azure(config):
-  TENANT = config_file["AzureServicePrinciple"]["TENANT"]
-  CLIENT_ID = config_file["AzureServicePrinciple"]["CLIENT_ID"]
-  CLIENT_SECRET = config_file["AzureServicePrinciple"]["CLIENT_SECRET"]
-  VAULT_URL = config_file["AzureServicePrinciple"]["VAULT_URL"]
-
-  credential = ClientSecretCredential(TENANT,CLIENT_ID,CLIENT_SECRET)
-  client = SecretClient(vault_url=VAULT_URL, credential=credential)
-  return client
+from utility_functions import authenticate_azure
 
 def fetch_data_from_db(config):
-   
-
    client = authenticate_azure(config)
    http_path = client.get_secret("http-path").value
    server_hostname = client.get_secret("server-hostname").value
@@ -32,7 +19,6 @@ def fetch_data_from_db(config):
 
         df = pd.DataFrame(res.fetchall())
         df.columns=[x[0] for x in res.description]
-        # print(df)
         st.dataframe(df)
         st.bar_chart(df, x="JobTitle", y="employees_count")
 

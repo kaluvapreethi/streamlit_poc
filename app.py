@@ -3,20 +3,6 @@ from databricks import sql
 import streamlit as st
 import configparser
 from utility_functions import authenticate_azure
-# from azure.identity import ClientSecretCredential
-# from azure.keyvault.secrets import SecretClient
-
-
-# def authenticate_azure(config):
-#   TENANT = config_file["AzureServicePrinciple"]["TENANT"]
-#   CLIENT_ID = config_file["AzureServicePrinciple"]["CLIENT_ID"]
-#   CLIENT_SECRET = config_file["AzureServicePrinciple"]["CLIENT_SECRET"]
-#   VAULT_URL = config_file["AzureServicePrinciple"]["VAULT_URL"]
-
-#   credential = ClientSecretCredential(TENANT,CLIENT_ID,CLIENT_SECRET)
-#   client = SecretClient(vault_url=VAULT_URL, credential=credential)
-#   return client
-
 
 def fetch_data_from_db(config_file,gender):
   
@@ -76,8 +62,5 @@ if __name__=="__main__":
 
       if gender:
         fetch_data_from_db(config_file,gender)
-  
-  # fetch_data_from_db(config_file)
-
 
 
